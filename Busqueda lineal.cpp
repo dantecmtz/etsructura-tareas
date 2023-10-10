@@ -59,7 +59,7 @@ public:
         return i;
     }
     friend ostream& operator <<(ostream& o, Constancia& e){
-		o<<"\n Nombre: "<<e.Nombre;
+		o<<" Nombre: "<<e.Nombre;
         o<<"\n Carrera: "<<e.Carrera;
         o<<"\n Materias aprobadas: "<<e.MateriasAprobadas;
         o<<"\n PromedioGeneral: "<<e.PromedioGeneral;
@@ -152,7 +152,7 @@ public:
             cout<<"\n La lista esta vacia";
             return false;
         }
-        cout<<"\nIntroduzca el nombre del alumno que busca: ";
+        cout<<"Introduzca el nombre del alumno que busca: ";
         cin>>nombreBuscado;
         while(i<=ult){
         	if(datos[i].getNombre()==nombreBuscado){
@@ -164,15 +164,28 @@ public:
 		cout<<"\nNo se ha encontrado el alumno que busca.";
 		return false;
 	}
-
+	int busquedaBinaria(Constancia elem){
+		int i=0,j=ultimo();
+		while(i<=j){
+			int medio=(i+j)/2;
+			if(datos[medio]==elem)
+				return medio;
+			if(elem<datos[medio]){
+				j=medio--;
+			}else{
+				i=medio++;
+			}
+		}
+		return -1;
+	}
 };
 
 int main()
 {
     Pila MiPila;
     Constancia molde;
-    int menu=0,posE,opc;
-    string nombreBuscado;
+    int menu=0;
+	char opc;
     while(menu!=5){
     	cout<<"\n\t --MENU--";
     	cout<<"\n1.Dar de alta a un alumno";
@@ -186,22 +199,44 @@ int main()
     		case 1: 
 				cin>>molde;
 				MiPila.encolar(molde);
+				cout<<"\nIntroduzca cualquier caracter: ";
+				cin>>opc;
+				system("cls");
 				break;
 			case 2:
 				MiPila.buscar();
+				cout<<"\nIntroduzca cualquier caracter: ";
+				cin>>opc;
+				system("cls");
 				break;
 			case 3:
+				cout<<"Datos del alumno:\n";
 				MiPila.mostrar();
-				cout<<"\nPresione 1 para generar constancia de este alumno, 2 para regresar: ";
+				cout<<"\n\n1.Generar constancia, 2. Cancelar: ";
 				cin>>opc;
-				if(opc==1){
+				if(opc=='1'){
 					MiPila.desencolar();
 					cout<<"\nSe ha generado la constancia con exito.";
+					cout<<"\nIntroduzca cualquier caracter: ";
+				}else{
+					system("cls");
+					break;
 				}
+				cin>>opc;
+				system("cls");
 				break;
 			case 4:
-				cout<<MiPila;
+				if(MiPila.vacia())
+					cout<<"\nNo hay alumnos registrados.";
+				else{
+					cout<<MiPila;
+				}
+				cout<<"\n\nIntroduzca cualquier caracter: ";
+				cin>>opc;
+				system("cls");
 				break;
+			default: 
+				system("cls");
 		}
 	}
     return 0;
